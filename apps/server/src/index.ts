@@ -1,9 +1,11 @@
 import http from "http";
 import SocketService from "./services/socket";
+import dotenv from "dotenv";
 
 async function init() {
   const socketService = new SocketService();
   const httpServer = http.createServer();
+  dotenv.config();
   const PORT = process.env.PORT || 8000;
 
   socketService.io.attach(httpServer);
@@ -12,8 +14,7 @@ async function init() {
     console.log(`Server started on port ${PORT}`);
   });
 
-  
-  socketService.initListner();
+  socketService.initListener();
 }
 
 init();

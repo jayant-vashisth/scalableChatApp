@@ -5,7 +5,7 @@ import { useSocket } from "./context/SocketProvider";
 
 export default function Page() {
   const [message, setMessage] = useState("");
-  const { sendMessage } = useSocket();
+  const { sendMessage, messages } = useSocket();
 
   const sendChatMessage = (message: string) => {
     sendMessage(message);
@@ -33,6 +33,11 @@ export default function Page() {
       >
         Send
       </button>
+      <div>
+        {messages.map((e) => {
+          return <li>{e}</li>;
+        })}
+      </div>
     </div>
   );
 }
