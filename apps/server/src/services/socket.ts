@@ -1,6 +1,8 @@
 import { Server } from "socket.io";
 import Redis, { RedisOptions } from "ioredis";
 import dotenv from "dotenv";
+import prismaClient from "./prisma";
+import { produceMessage } from "./kafka";
 
 dotenv.config();
 
@@ -36,10 +38,13 @@ class SocketService {
       });
     });
 
-    sub.on("message", (channel, message) => {
+    sub.on("message", async (channel, message) => {
       if (channel === "MESSAGES") {
         console.log("new message from redis", message);
         io.emit("message", message);
+
+        await produceMessage(message);
+        console.log("Message produced to kafka broker")
       }
     });
   }
